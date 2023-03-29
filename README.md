@@ -273,3 +273,48 @@ module.exports = {
 },
 此时可以运行pnpm run prettier-format来格式化代码
 ```
+
+## 11.使用 lint-staged 只对暂存区的文件进行格式化
+
+### 1.安装 lint-staged
+
+```bash
+pnpm install husky lint-staged -D
+```
+
+### 2.安装 husky
+
+1.安装
+
+```bash
+pnpm install husky --save-dev
+```
+
+2.激活钩子
+
+```bash
+npx husky install
+```
+
+2.设置安装依赖时自动激活钩子脚本
+
+```bash
+pnpm set-script prepare "husky install"
+```
+
+### 3.package.json 添加 lint-staged 节点，用 lint-staged 对暂存区文件进行格式化
+
+```json
+"lint-staged": {
+  "*.{js,jsx,vue,ts,tsx}": [
+    "npm run lint",
+    "npm run prettier-format"
+  ]
+}
+```
+
+### 4.添加 husky 钩子，提交时触发 npx lint-stage 命令
+
+```bash
+npx husky add .husky/pre-commit "npx lint-staged"
+```
