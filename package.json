@@ -10,6 +10,7 @@
 		"lint:create": "eslint --init",
 		"lint": "eslint \"src/**/*.{js,tsx,ts}\" --fix",
 		"prettier-format": "prettier --config .prettierrc.cjs \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\" --write",
+		"lint:css": "stylelint **/*.{less,css,scss} --fix",
 		"prepare": "husky install"
 	},
 	"dependencies": {
@@ -30,6 +31,11 @@
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.0",
 		"prettier": "^2.8.7",
+		"stylelint": "^15.3.0",
+		"stylelint-config-prettier": "^9.0.5",
+		"stylelint-config-recess-order": "^4.0.0",
+		"stylelint-config-standard": "^31.0.0",
+		"stylelint-less": "^1.0.6",
 		"typescript": "^4.9.3",
 		"vite": "^4.2.0"
 	},
@@ -37,6 +43,9 @@
 		"*.{js,jsx,ts,tsx}": [
 			"npm run lint",
 			"npm run prettier-format"
+		],
+		"*.{css,sass,scss}": [
+			"npm run lint:css"
 		]
 	}
 }
