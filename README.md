@@ -553,3 +553,23 @@ npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
 }
 此时每次commit直接执行pnpm run commit就行
 ```
+
+## 14.安装 vite-plugin-eslint 插件并在项目中使用
+
+1.安装插件
+
+```bash
+pnpm install vite-plugin-eslint -D
+```
+
+2.配置 vite.config.ts 文件使用 vite-plugin-eslint 插件（该插件能在开发的过程中在页面实时显示代码格式或语法的错误）
+
+```javascript
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import eslintPlugin from "vite-plugin-eslint";
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [react(), eslintPlugin()]
+});
+```
