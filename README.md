@@ -8,7 +8,7 @@
 npm install pnpm -g
 ```
 
-## 2.安装 vite
+## 2.全局安装 vite
 
 ```bash
 npm install -g vite
@@ -254,4 +254,22 @@ module.exports = {
 	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "vite.config.ts"],
 	"exclude": ["node_modules", "dist", "**/*.js"]
 }
+```
+
+## 9.配置 package.json，eslint 校验并修复代码脚本
+
+```json
+"scripts": {
+  "lint": "eslint \"src/**/*.{js,tsx,ts}\" --fix"
+},
+此时可以运行pnpm run lint来校验并修复存在代码格式或语法错误的文件
+```
+
+## 10.配置 package.json，prettier 格式化代码脚本
+
+```json
+"scripts": {
+  "prettier-format": "prettier --config .prettierrc.cjs \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\" --write",
+},
+此时可以运行pnpm run prettier-format来格式化代码
 ```
