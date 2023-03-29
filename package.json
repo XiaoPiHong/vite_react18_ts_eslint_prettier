@@ -11,18 +11,23 @@
 		"lint": "eslint \"src/**/*.{js,tsx,ts}\" --fix",
 		"prettier-format": "prettier --config .prettierrc.cjs \"src/**/*.{js,ts,json,tsx,css,less,scss,html,md}\" --write",
 		"lint:css": "stylelint **/*.{less,css,scss} --fix",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"commit": "cz"
 	},
 	"dependencies": {
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^17.5.1",
+		"@commitlint/config-conventional": "^17.4.4",
 		"@types/react": "^18.0.28",
 		"@types/react-dom": "^18.0.11",
 		"@typescript-eslint/eslint-plugin": "^5.57.0",
 		"@typescript-eslint/parser": "^5.57.0",
 		"@vitejs/plugin-react": "^3.1.0",
+		"commitizen": "^4.3.0",
+		"cz-customizable": "^7.0.0",
 		"eslint": "^8.36.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -47,5 +52,13 @@
 		"*.{css,sass,scss}": [
 			"npm run lint:css"
 		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "node_modules/cz-customizable"
+		},
+		"cz-customizable": {
+			"config": ".cz-config.cjs"
+		}
 	}
 }

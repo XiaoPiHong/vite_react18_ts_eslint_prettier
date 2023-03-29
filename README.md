@@ -379,7 +379,7 @@ module.exports = {
 },
 ```
 
-## 5.package.json 中使用 lint-staged 触发 stylelint 格式化 css 脚本
+### 5.package.json 中使用 lint-staged 触发 stylelint 格式化 css 脚本
 
 ```json
 "lint-staged": {
@@ -391,4 +391,165 @@ module.exports = {
     "npm run lint:css"
   ]
 }
+```
+
+## 13.规范 git 提交信息
+
+### 1.安装 commitizen 规范 Git 提交说明
+
+Commitizen 是一个撰写符合 Commit Message 标准的一款工具，可以帮助开发者提交符合规范的 Commit Message
+
+```bash
+pnpm install commitizen -D
+```
+
+### 2.安装 cz-customizable（cz-customizable 是本地适配器）
+
+```bash
+pnpm install cz-customizable -D
+```
+
+### 3.配置 commitizen，使用 cz-customizable 作为信息交互插件，在 package.json 中添加下面节点
+
+```json
+"config": {
+  "commitizen": {
+    "path": "node_modules/cz-customizable"
+  }
+}
+此时可以执行 git cz 来进行信息交互的方式commit
+```
+
+### 4.项目根目录下创建.cz-config.cjs 文件并配置
+
+1.配置 package.json
+
+```json
+"config": {
+  "commitizen": {
+    "path": "node_modules/cz-customizable"
+  },
+  "cz-customizable": {
+    "config": ".cz-config.cjs"
+  }
+},
+```
+
+2.新增.cz-config.cjs 文件
+
+```javascript
+module.exports = {
+  // type 类型（定义之后，可通过上下键选择）
+  types: [
+    { value: "feat", name: "feat: 新增功能" },
+    { value: "fix", name: "fix: 修复 bug" },
+    { value: "docs", name: "docs: 文档变更" },
+    {
+      value: "style",
+      name: "style: 代码格式（不影响功能，例如空格、分号等格式修正）",
+    },
+    {
+      value: "refactor",
+      name: "refactor: 代码重构（不包括 bug 修复、功能新增）",
+    },
+    { value: "perf", name: "perf: 性能优化" },
+    { value: "test", name: "test: 添加、修改测试用例" },
+    {
+      value: "build",
+      name: "build: 构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）",
+    },
+    { value: "ci", name: "ci: 修改 CI 配置、脚本" },
+    {
+      value: "chore",
+      name: "chore: 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）",
+    },
+    { value: "revert", name: "revert: 回滚 commit" },
+  ],
+  // scope 类型（定义之后，可通过上下键选择）
+  scopes: [
+    ["components", "组件相关"],
+    ["hooks", "hook 相关"],
+    ["utils", "utils 相关"],
+    ["element-ui", "对 element-ui 的调整"],
+    ["styles", "样式相关"],
+    ["deps", "项目依赖"],
+    ["auth", "对 auth 修改"],
+    ["other", "其他修改"],
+    // 如果选择 custom，后面会让你再输入一个自定义的 scope。也可以不设置此项，把后面的 allowCustomScopes 设置为 true
+    ["custom", "以上都不是？我要自定义"],
+  ].map(([value, description]) => {
+    return {
+      value,
+      name: `${value.padEnd(30)} (${description})`,
+    };
+  }),
+  // 是否允许自定义填写 scope，在 scope 选择的时候，会有 empty 和 custom 可以选择。
+  // allowCustomScopes: true,
+  // allowTicketNumber: false,
+  // isTicketNumberRequired: false,
+  // ticketNumberPrefix: 'TICKET-',
+  // ticketNumberRegExp: '\\d{1,5}',
+  // 针对每一个 type 去定义对应的 scopes，例如 fix
+  /*
+  scopeOverrides: {
+    fix: [
+      { name: 'merge' },
+      { name: 'style' },
+      { name: 'e2eTest' },
+      { name: 'unitTest' }
+    ]
+  },
+  */
+  // 交互提示信息
+  messages: {
+    type: "确保本次提交遵循 Angular 规范！\n选择你要提交的类型：",
+    scope: "\n选择一个 scope（可选）：",
+    // 选择 scope: custom 时会出下面的提示
+    customScope: "请输入自定义的 scope：",
+    subject: "填写简短精炼的变更描述：\n",
+    body: '填写更加详细的变更描述（可选）。使用 "|" 换行：\n',
+    breaking: "列举非兼容性重大的变更（可选）：\n",
+    footer: "列举出所有变更的 ISSUES CLOSED（可选）。 例如: #31, #34：\n",
+    confirmCommit: "确认提交？",
+  },
+  // 设置只有 type 选择了 feat 或 fix，才询问 breaking message
+  allowBreakingChanges: ["feat", "fix"],
+  // 跳过要询问的步骤
+  // skipQuestions: ['body', 'footer'],
+  // subject 限制长度
+  subjectLimit: 100,
+  breaklineChar: "|", // 支持 body 和 footer
+  // footerPrefix : 'ISSUES CLOSED:'
+  // askForBreakingChangeFirst : true,
+};
+此时可以执行 git cz 来进行信息交互的方式commit（交互信息变为中文）
+```
+
+### 5.安装 commitlint 检查提交消息是否符合常规提交格式
+
+```bash
+pnpm install @commitlint/cli @commitlint/config-conventional -D
+```
+
+### 6.项目根目录下创建 commitlint.config.cjs 文件，并标明 commitlint 校验时使用的规范是@commitlint/config-conventional
+
+注意：该处用的提交格式规范是 Conventional Commits，预先配置的 commitizen 信息交互模板要按照前者的规范来配置
+
+```javascript
+module.exports = { extends: ["@commitlint/config-conventional"] };
+```
+
+### 7.添加 husky 钩子，提交时触发 commitlint 校验
+
+```bash
+npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
+```
+
+### 8.现在 commit 都会触发 commitlint 中指令来校验提交信息的格式，但是我想每次 commit 都是通过信息交互的方式进行内容填写，可以在 package.json 中添加脚本命令
+
+```json
+"scripts": {
+  "commit": "cz",
+}
+此时每次commit直接执行pnpm run commit就行
 ```
