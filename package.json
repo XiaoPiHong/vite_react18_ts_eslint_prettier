@@ -34,7 +34,7 @@
 		"vite": "^4.2.0"
 	},
 	"lint-staged": {
-		"*.{js,jsx,vue,ts,tsx}": [
+		"*.{js,jsx,ts,tsx}": [
 			"npm run lint",
 			"npm run prettier-format"
 		]
